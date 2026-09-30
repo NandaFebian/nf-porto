@@ -26,3 +26,5 @@ yarn-error.log*
 next-env.d.ts
 # local PRD
 AGENTS.md
+CLAUDE.md
+.claude/
