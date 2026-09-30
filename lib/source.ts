@@ -1,16 +1,14 @@
-import { llms, loader } from 'fumadocs-core/source';
+import { loader } from 'fumadocs-core/source';
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
-import { docsContentRoute, docsImageRoute, docsRoute } from './shared';
 import { defineDocs } from 'fumadocs-mdx/macro';
-import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
+import { metaSchema } from 'fumadocs-core/source/schema';
+import { projectsRoute } from './shared';
+import { projectSchema } from './project-schema';
 
-const docs = defineDocs({
-  dir: 'content/docs',
+const projects = defineDocs({
+  dir: 'content/projects',
   docs: {
-    schema: pageSchema,
-    postprocess: {
-      includeProcessedMarkdown: true,
-    },
+    schema: projectSchema,
   },
   meta: {
     schema: metaSchema,
@@ -19,13 +17,7 @@ const docs = defineDocs({
 
 // See https://fumadocs.dev/docs/headless/source-api for more info
 export const source = loader({
-  baseUrl: docsRoute,
-  source: docs.toFumadocsSource(),
+  baseUrl: projectsRoute,
+  source: projects.toFumadocsSource(),
   plugins: [lucideIconsPlugin()],
-});
-
-export const docsLlms = llms(source, {
-  renderPage: async (page) => `# ${page.data.title} (${page.url})
-
-${await page.data.getText('processed')}`,
 });
