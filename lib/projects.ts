@@ -25,3 +25,53 @@ export function projectsUsing<P extends { stack: string[] }>(tech: string, proje
   const key = normalizeTech(tech);
   return projects.filter((project) => project.stack.some((item) => normalizeTech(item) === key));
 }
+
+/** URL value for a category, e.g. "Web App" -> "web-app". */
+export function categorySlug(category: string): string {
+  return category
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+export interface ProjectFilter {
+  type?: string;
+  tags: string[];
+}
+
+export function parseProjectFilter(params: URLSearchParams): ProjectFilter {
+  return {
+    type: params.get('type') ?? undefined,
+    tags: [...new Set(params.getAll('tag').map(normalizeTech).filter(Boolean))],
+  };
+}
+
+/** Tags combine with AND: a project must use every selected technology. */
+export function filterProjects<P extends { category: string; stack: string[] }>(
+  projects: P[],
+  filter: ProjectFilter,
+): P[] {
+  return projects.filter((project) => {
+    if (filter.type && categorySlug(project.category) !== filter.type) return false;
+    const stack = new Set(project.stack.map(normalizeTech));
+    return filter.tags.every((tag) => stack.has(tag));
+  });
+}
+
+/** Distinct technologies across projects, most used first, then alphabetical. */
+export function collectStack(projects: { stack: string[] }[]): { tag: string; label: string; count: number }[] {
+  const byTag = new Map<string, { tag: string; label: string; count: number }>();
+  for (const project of projects) {
+    const seen = new Set<string>();
+    for (const tech of project.stack) {
+      const tag = normalizeTech(tech);
+      if (seen.has(tag)) continue;
+      seen.add(tag);
+      const entry = byTag.get(tag);
+      if (entry) entry.count += 1;
+      else byTag.set(tag, { tag, label: tech.trim(), count: 1 });
+    }
+  }
+  return [...byTag.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+}

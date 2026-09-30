@@ -20,19 +20,19 @@ export default async function Page(props: PageProps<'/projects/[slug]'>) {
       <DocsDescription className="mb-0">{data.summary}</DocsDescription>
       <dl className="grid grid-cols-2 gap-x-6 gap-y-2 border-b pb-6 text-sm sm:grid-cols-4">
         <div>
-          <dt className="text-fd-muted-foreground">Role</dt>
+          <dt className="font-mono text-xs lowercase text-fd-muted-foreground">Role</dt>
           <dd className="font-medium">{data.role}</dd>
         </div>
         <div>
-          <dt className="text-fd-muted-foreground">Year</dt>
+          <dt className="font-mono text-xs lowercase text-fd-muted-foreground">Year</dt>
           <dd className="font-medium">{data.year}</dd>
         </div>
         <div>
-          <dt className="text-fd-muted-foreground">Category</dt>
+          <dt className="font-mono text-xs lowercase text-fd-muted-foreground">Category</dt>
           <dd className="font-medium">{data.category}</dd>
         </div>
         <div>
-          <dt className="text-fd-muted-foreground">Status</dt>
+          <dt className="font-mono text-xs lowercase text-fd-muted-foreground">Status</dt>
           <dd className="font-medium">{data.status}</dd>
         </div>
         <div className="col-span-full">

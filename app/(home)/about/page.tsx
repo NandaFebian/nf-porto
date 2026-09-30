@@ -1,0 +1,124 @@
+import type { Metadata } from 'next';
+import { CvLink } from '@/components/cv-link';
+import { Pending } from '@/components/pending';
+import { PersonJsonLd } from '@/components/person-json-ld';
+import { SpecList } from '@/components/spec-list';
+import { profile } from '@/content/profile';
+import { isPlaceholder } from '@/lib/shared';
+
+export const metadata: Metadata = {
+  title: 'About',
+  description: `Education, experience, and publications of ${profile.name}, with a downloadable CV.`,
+};
+
+function Field({ value, what }: { value: string; what: string }) {
+  return isPlaceholder(value) ? <Pending what={what} /> : <>{value}</>;
+}
+
+function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
+  return (
+    <section aria-labelledby={id} className="grid gap-4 border-t pt-6 md:grid-cols-[12rem_1fr] md:gap-8">
+      <h2 id={id} className="text-lg font-semibold">
+        {title}
+      </h2>
+      <div>{children}</div>
+    </section>
+  );
+}
+
+export default function AboutPage() {
+  const links = [
+    { label: 'GitHub', href: profile.socials.github },
+    { label: 'LinkedIn', href: profile.socials.linkedin },
+  ];
+
+  return (
+    <div className="mx-auto w-full max-w-4xl px-4 pt-10 pb-20 sm:px-6 md:pt-16">
+      <PersonJsonLd />
+      <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">About</h1>
+      <p className="mt-4 max-w-prose text-lg">
+        <Field value={profile.tagline} what="tagline" />
+      </p>
+
+      <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <SpecList
+          items={[
+            { label: 'name', value: profile.name },
+            { label: 'role', value: profile.role },
+            { label: 'based in', value: profile.location },
+            ...links.map((link) => ({
+              label: link.label.toLowerCase(),
+              value: isPlaceholder(link.href) ? (
+                <Pending what={`${link.label} URL`} />
+              ) : (
+                <a href={link.href} target="_blank" rel="noreferrer" className="underline underline-offset-4">
+                  {link.href.replace(/^https?:\/\/(www\.)?/, '')}
+                </a>
+              ),
+            })),
+          ]}
+        />
+        <CvLink className="self-start" />
+      </div>
+
+      <div className="mt-14 flex flex-col gap-12">
+        {profile.experience.length > 0 && (
+          <Section id="experience" title="Experience">
+            <ol className="flex flex-col gap-6">
+              {profile.experience.map((item) => (
+                <li key={`${item.organization}-${item.period}`}>
+                  <p className="font-medium">
+                    {item.role}, {item.organization}
+                  </p>
+                  <p className="font-mono text-xs text-fd-muted-foreground">{item.period}</p>
+                  {item.summary && <p className="mt-2 text-fd-muted-foreground">{item.summary}</p>}
+                </li>
+              ))}
+            </ol>
+          </Section>
+        )}
+
+        {profile.education.length > 0 && (
+          <Section id="education" title="Education">
+            <ol className="flex flex-col gap-6">
+              {profile.education.map((item) => (
+                <li key={`${item.school}-${item.period}`}>
+                  <p className="font-medium">{item.school}</p>
+                  <p className="text-fd-muted-foreground">
+                    <Field value={item.degree} what="degree and major" />
+                  </p>
+                  <p className="font-mono text-xs text-fd-muted-foreground">
+                    <Field value={item.period} what="period" />
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </Section>
+        )}
+
+        {profile.publications.length > 0 && (
+          <Section id="publications" title="Publications">
+            <ol className="flex flex-col gap-6">
+              {profile.publications.map((item) => (
+                <li key={item.title}>
+                  <p className="font-medium">
+                    {item.url ? (
+                      <a href={item.url} target="_blank" rel="noreferrer" className="underline underline-offset-4">
+                        {item.title}
+                      </a>
+                    ) : (
+                      item.title
+                    )}
+                  </p>
+                  <p className="text-fd-muted-foreground">
+                    {item.venue}, {item.year}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </Section>
+        )}
+      </div>
+    </div>
+  );
+}

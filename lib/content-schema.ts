@@ -50,6 +50,26 @@ export const profileSchema = z.object({
       period: z.string().min(1),
     }),
   ),
+  experience: z
+    .array(
+      z.object({
+        organization: z.string().min(1),
+        role: z.string().min(1),
+        period: z.string().min(1),
+        summary: z.string().min(1).optional(),
+      }),
+    )
+    .default([]),
+  publications: z
+    .array(
+      z.object({
+        title: z.string().min(1),
+        venue: z.string().min(1),
+        year: z.number().int().min(2000),
+        url: z.url().optional(),
+      }),
+    )
+    .default([]),
 });
 
 export type Profile = z.infer<typeof profileSchema>;

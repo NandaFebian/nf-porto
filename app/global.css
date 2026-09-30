@@ -2,6 +2,42 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
+@theme inline {
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --color-brick: var(--brick);
+  --color-brick-foreground: var(--brick-foreground);
+}
+
+/* Brick red from Balinese bata merah; reserved for the primary action and active filters. */
+:root {
+  --brick: #a63d24;
+  --brick-foreground: #ffffff;
+}
+
+.dark {
+  --brick: #e07a5f;
+  --brick-foreground: #121212;
+}
+
+/* Fumadocs' default light muted text is 4.35:1 on its background; this is 5.95:1. */
+:root:not(.dark) {
+  --color-fd-muted-foreground: hsl(0, 0%, 37%);
+}
+
+/* Fumadocs' mobile header controls are 24-34px; lift them to a 44px touch target. */
+@media (width < 64rem) {
+  #nd-nav :is(a, button) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-fd-foreground);
+  outline-offset: 2px;
+}
+
 html {
   scrollbar-gutter: stable;
 }

@@ -19,4 +19,7 @@ export const profile = profileSchema.parse({
       period: 'TODO',
     },
   ],
+  // Sections on /about stay hidden while these are empty.
+  experience: [],
+  publications: [],
 });
