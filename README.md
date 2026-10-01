@@ -1,45 +1,46 @@
-# _scaffold
+# Nanda Febian portfolio
 
-This is a Next.js application generated with
-[Create Fumadocs](https://github.com/fuma-nama/fumadocs).
+A personal portfolio in the style of technical documentation: each project has its own docs-like page covering the
+problem, role, architecture, stack, challenges, and results. Built with Next.js (App Router) and Fumadocs; content
+lives in this repository as MDX and TypeScript, validated with Zod at build time.
 
-Run development server:
+## Development
 
 ```bash
-npm run dev
-# or
-pnpm dev
-# or
-yarn dev
+npm install
+cp .env.example .env.local   # optional: only the contact form and site URL need values
+npm run dev                  # http://localhost:3000
 ```
 
-Open http://localhost:3000 with your browser to see the result.
+## Content
 
-## Explore
+| What               | Where                              | Notes                                                                    |
+| ------------------ | ---------------------------------- | ------------------------------------------------------------------------ |
+| Projects           | `content/projects/<slug>.mdx`      | Start from `templates/project.mdx`. The file name is the URL slug.       |
+| Project covers     | `public/projects/<slug>/cover.png` | Shown on cards. Keep under 500 KB (checked in CI).                       |
+| Skills             | `content/skills.ts`                | Projects using a skill are linked automatically via frontmatter `stack`. |
+| Profile, education | `content/profile.ts`               | Values containing `TODO` render as `[pending: ...]`, never as links.     |
+| CV                 | `public/cv/nanda-febian-cv.pdf`    | The "Download CV" button appears once the file exists.                   |
 
-In the project, you can see:
+A missing or invalid frontmatter field fails the build. Every image in project MDX needs alt text (checked by `npm test`).
+Diagrams are written as ` ```mermaid ` code blocks.
 
-- `lib/source.ts`: Code for content source adapter, [`loader()`](https://fumadocs.dev/docs/headless/source-api) provides the interface to access your content.
-- `lib/layout.shared.tsx`: Shared options for layouts, optional but preferred to keep.
+## Scripts
 
-| Route                     | Description                                            |
-| ------------------------- | ------------------------------------------------------ |
-| `app/(home)`              | The route group for your landing page and other pages. |
-| `app/docs`                | The documentation layout and pages.                    |
-| `app/api/search/route.ts` | The Route Handler for search.                          |
+| Command                | What it does                                               |
+| ---------------------- | ---------------------------------------------------------- |
+| `npm run dev`          | Development server                                         |
+| `npm run build`        | Production build (static pages, plus search and contact)   |
+| `npm run lint`         | ESLint                                                     |
+| `npm run format`       | Prettier, write changes (`format:check` only checks)       |
+| `npm run types:check`  | Route types and `tsc --noEmit`                             |
+| `npm test`             | Vitest unit tests (content helpers, schemas, contact)      |
+| `npm run test:e2e`     | Playwright against the production build; run `build` first |
+| `npm run check:images` | Fails if any image in `public/` is over 500 KB             |
 
-### Fumadocs MDX
+CI (`.github/workflows/ci.yml`) runs all of the checks above on every pull request.
 
-Collections are defined with the [Macro API](https://fumadocs.dev/docs/mdx/macro) in `lib/source.ts`.
+## Environment
 
-Read the [Introduction](https://fumadocs.dev/docs/mdx) for further details.
-
-## Learn More
-
-To learn more about Next.js and Fumadocs, take a look at the following
-resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
-  features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [Fumadocs](https://fumadocs.dev) - learn about Fumadocs
+See `.env.example`. On Vercel, set `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, and optionally
+`CONTACT_FROM_EMAIL` and the Turnstile keys. Vercel Analytics and Speed Insights load only on Vercel builds.

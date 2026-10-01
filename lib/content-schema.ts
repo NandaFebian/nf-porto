@@ -1,14 +1,7 @@
 import { z } from 'zod';
 import { normalizeTech } from './projects';
 
-export const skillCategories = [
-  'Languages',
-  'Frontend',
-  'Backend',
-  'Database',
-  'DevOps',
-  'Tools',
-] as const;
+export const skillCategories = ['Languages', 'Frontend', 'Backend', 'Database', 'DevOps', 'Tools'] as const;
 export const skillLevels = ['Advanced', 'Intermediate', 'Beginner'] as const;
 
 export const skillSchema = z.object({
@@ -66,6 +59,17 @@ export const profileSchema = z.object({
         title: z.string().min(1),
         venue: z.string().min(1),
         year: z.number().int().min(2000),
+        url: z.url().optional(),
+      }),
+    )
+    .default([]),
+  certifications: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        issuer: z.string().min(1),
+        year: z.number().int().min(2000),
+        /** Verification or credential URL. */
         url: z.url().optional(),
       }),
     )

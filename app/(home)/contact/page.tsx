@@ -31,8 +31,8 @@ export default function ContactPage() {
       <div>
         <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">Contact</h1>
         <p className="mt-3 mb-8 max-w-prose text-fd-muted-foreground">
-          Write about a role, a freelance project, or a question on one of the projects. The message goes straight to
-          my inbox.
+          Write about a role, a freelance project, or a question on one of the projects. The message goes straight to my
+          inbox.
         </p>
         <ContactForm />
       </div>

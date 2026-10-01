@@ -13,9 +13,7 @@ describe('skillsSchema', () => {
   });
 
   it('rejects unknown levels', () => {
-    const result = skillsSchema.safeParse([
-      { name: 'Go', category: 'Languages', level: 'Expert', icon: 'go' },
-    ]);
+    const result = skillsSchema.safeParse([{ name: 'Go', category: 'Languages', level: 'Expert', icon: 'go' }]);
     expect(result.success).toBe(false);
   });
 });

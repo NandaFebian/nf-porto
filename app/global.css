@@ -9,7 +9,7 @@
   --color-brick-foreground: var(--brick-foreground);
 }
 
-/* Brick red from Balinese bata merah; reserved for the primary action and active filters. */
+/* Brick red from Balinese bata merah; reserved for the primary action, active filters, the hero spotlight, and the jump-to flash. */
 :root {
   --brick: #a63d24;
   --brick-foreground: #ffffff;
@@ -40,6 +40,160 @@
 
 html {
   scrollbar-gutter: stable;
+}
+
+/* Motion (dial 2): every animation below marks a change the reader caused. */
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Page change: the old page steps back fast, the new one rises into place. */
+  ::view-transition-old(.page-exit) {
+    animation: 140ms ease-in both page-out;
+  }
+  ::view-transition-new(.page-enter) {
+    animation: 320ms var(--ease-out) 60ms both page-in;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 200ms;
+  }
+
+  /* Shared project title, card to detail heading. */
+  ::view-transition-group(.project-title) {
+    animation-duration: 380ms;
+    animation-timing-function: var(--ease-out);
+  }
+  /* Card and heading wrap differently, so hand off quickly instead of cross-fading two layouts. */
+  ::view-transition-old(.project-title) {
+    animation: 120ms ease-out both title-fade-out;
+  }
+  ::view-transition-new(.project-title) {
+    animation: 220ms ease-in 100ms both title-fade-in;
+  }
+
+  /* Filter changes: kept cards slide to their new slot, others fade in or out. */
+  ::view-transition-group(.card) {
+    animation-duration: 320ms;
+    animation-timing-function: var(--ease-out);
+  }
+  ::view-transition-new(.card-in) {
+    animation: 260ms var(--ease-out) 80ms both card-in;
+  }
+  ::view-transition-old(.card-out) {
+    animation: 160ms ease-in both card-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes title-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes title-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes card-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+/* Form results ease in so a changed status is noticed. */
+@media (prefers-reduced-motion: no-preference) {
+  .status-in {
+    animation: status-in 280ms var(--ease-out) both;
+  }
+}
+
+@keyframes status-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+/* The skill row a link or search result jumped to flashes once, then settles. */
+@keyframes target-flash {
+  from {
+    background-color: color-mix(in oklab, var(--brick) 22%, transparent);
+  }
+}
+
+.target-flash:target {
+  animation: target-flash 1.6s var(--ease-out);
+}
+
+/* Link underline that draws in from the left. */
+.draw-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 320ms var(--ease-out);
+}
+
+:is(.group:hover, .group:focus-within) .draw-underline,
+.draw-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* Skill meters fill as the row scrolls into view, where scroll-driven animation is supported. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .meter-fill {
+      animation: meter-fill linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 30%;
+      transform-origin: bottom;
+    }
+  }
+}
+
+@keyframes meter-fill {
+  from {
+    transform: scaleY(0.15);
+    opacity: 0.3;
+  }
 }
 
 html > body[data-scroll-locked] {

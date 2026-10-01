@@ -94,10 +94,7 @@ describe('filterProjects', () => {
 
 describe('collectStack', () => {
   it('counts each technology once per project, most used first', () => {
-    const stack = collectStack([
-      { stack: ['NestJS', 'MongoDB'] },
-      { stack: ['nestjs', 'Next.js', 'NestJS'] },
-    ]);
+    const stack = collectStack([{ stack: ['NestJS', 'MongoDB'] }, { stack: ['nestjs', 'Next.js', 'NestJS'] }]);
     expect(stack).toEqual([
       { tag: 'nestjs', label: 'NestJS', count: 2 },
       { tag: 'mongodb', label: 'MongoDB', count: 1 },

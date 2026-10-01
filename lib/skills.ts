@@ -1,11 +1,16 @@
 import { skills } from '@/content/skills';
 import { skillCategories, type Skill } from './content-schema';
-import { projectsUsing } from './projects';
+import { categorySlug, projectsUsing } from './projects';
 import { getProjects } from './source';
 
 export type SkillWithProjects = Skill & {
   projects: { title: string; url: string }[];
 };
+
+/** Fragment id of a skill row on /skills, e.g. "Next.js" -> "skill-next-js". */
+export function skillAnchor(name: string): string {
+  return `skill-${categorySlug(name)}`;
+}
 
 /** Skills with the projects that list them in `stack`. */
 export function getSkillsWithProjects(): SkillWithProjects[] {

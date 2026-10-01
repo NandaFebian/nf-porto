@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { ProjectSummary } from '@/lib/public-files';
 import { cn } from '@/lib/cn';
+import { SharedProjectTitle } from './shared-title';
+import { TiltSurface } from './tilt-surface';
 
 export function ProjectCover({
   project,
@@ -15,23 +17,37 @@ export function ProjectCover({
   className?: string;
 }) {
   return (
-    <div className={cn('relative aspect-[16/10] overflow-hidden rounded-md border bg-fd-muted', className)}>
-      {project.cover ? (
-        <Image
-          src={project.cover}
-          alt={`Screenshot of ${project.title}`}
-          fill
-          sizes={sizes}
-          priority={priority}
-          className="object-cover"
-        />
-      ) : (
-        // TODO: add public/projects/<slug>/cover.png; the label below stays until it exists.
-        <div className="flex h-full flex-col justify-end p-4">
-          <span className="font-mono text-xs text-fd-muted-foreground">cover image pending</span>
-        </div>
-      )}
-    </div>
+    <TiltSurface className={className}>
+      <div className="relative aspect-16/10 overflow-hidden rounded-md border bg-fd-muted transition-colors duration-300 group-hover:border-fd-foreground/30">
+        {project.cover ? (
+          <Image
+            src={project.cover}
+            alt={`Screenshot of ${project.title}`}
+            fill
+            sizes={sizes}
+            priority={priority}
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+          />
+        ) : (
+          // TODO: add public/projects/<slug>/cover.png; the label below stays until it exists.
+          <div className="flex h-full flex-col justify-end p-4">
+            <span className="font-mono text-xs text-fd-muted-foreground">cover image pending</span>
+          </div>
+        )}
+      </div>
+    </TiltSurface>
+  );
+}
+
+/** Title link that covers the whole card, with an underline that draws in on hover or focus. */
+export function ProjectTitleLink({ project }: { project: Pick<ProjectSummary, 'url' | 'title'> }) {
+  return (
+    <Link
+      href={project.url}
+      className="draw-underline pb-0.5 after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-md focus-visible:after:outline-2 focus-visible:after:outline-offset-4 focus-visible:after:outline-fd-foreground"
+    >
+      {project.title}
+    </Link>
   );
 }
 
@@ -74,14 +90,11 @@ export function ProjectCard({ project, headingLevel = 'h3' }: { project: Project
         </span>
         <StatusLabel status={project.status} />
       </div>
-      <Heading className="text-lg font-semibold leading-snug">
-        <Link
-          href={project.url}
-          className="underline-offset-4 after:absolute after:inset-0 after:content-[''] group-hover:underline"
-        >
-          {project.title}
-        </Link>
-      </Heading>
+      <SharedProjectTitle url={project.url}>
+        <Heading className="w-fit text-lg font-semibold leading-snug">
+          <ProjectTitleLink project={project} />
+        </Heading>
+      </SharedProjectTitle>
       <p className="text-sm text-fd-muted-foreground">{project.summary}</p>
       <StackList stack={project.stack} className="mt-auto" />
     </article>

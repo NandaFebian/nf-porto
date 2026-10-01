@@ -1,7 +1,7 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { contactSchema, createRateLimiter, type ContactField, type ContactState } from '@/lib/contact';
+import { contactSchema, createRateLimiter, verifyTurnstile, type ContactField, type ContactState } from '@/lib/contact';
 
 const allow = createRateLimiter(5, 10 * 60 * 1000);
 
@@ -29,6 +29,19 @@ export async function sendContactMessage(_prev: ContactState, formData: FormData
   const ip = requestHeaders.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
   if (!allow(ip)) {
     return { status: 'error', message: 'Too many messages from this connection. Try again in 10 minutes.', values };
+  }
+
+  // Turnstile is optional: without a secret the honeypot and rate limit are the only spam checks.
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  if (turnstileSecret) {
+    const token = String(formData.get('cf-turnstile-response') ?? '');
+    if (!(await verifyTurnstile(token, turnstileSecret, ip === 'unknown' ? undefined : ip))) {
+      return {
+        status: 'error',
+        message: 'The spam check did not pass. Wait for the check to finish, then send again.',
+        values,
+      };
+    }
   }
 
   const apiKey = process.env.RESEND_API_KEY;

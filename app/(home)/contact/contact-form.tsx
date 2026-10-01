@@ -4,6 +4,9 @@ import { useActionState } from 'react';
 import { cn } from '@/lib/cn';
 import type { ContactField, ContactState } from '@/lib/contact';
 import { sendContactMessage } from './actions';
+import { Turnstile } from './turnstile';
+
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 // fd-error is too light for small text on the light background.
 const errorText = 'text-red-700 dark:text-red-400';
@@ -38,7 +41,13 @@ export function ContactForm() {
           <label htmlFor="name" className="text-sm font-medium">
             Name
           </label>
-          <input {...fieldProps('name')} type="text" autoComplete="name" placeholder="Your name" className={fieldClass} />
+          <input
+            {...fieldProps('name')}
+            type="text"
+            autoComplete="name"
+            placeholder="Your name"
+            className={fieldClass}
+          />
           {errorFor('name')}
         </div>
         <div className="flex flex-col gap-1.5">
@@ -68,6 +77,8 @@ export function ContactForm() {
         {errorFor('message')}
       </div>
 
+      {turnstileSiteKey && <Turnstile siteKey={turnstileSiteKey} resetKey={state} />}
+
       <div aria-hidden className="absolute left-[-9999px] h-px w-px overflow-hidden">
         <label htmlFor="website">Leave this empty</label>
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
@@ -77,13 +88,21 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex min-h-11 items-center rounded-md bg-brick px-5 text-sm font-medium text-brick-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+          className="inline-flex min-h-11 items-center rounded-md bg-brick px-5 text-sm font-medium text-brick-foreground transition-[opacity,transform] duration-150 hover:opacity-90 active:scale-[0.97] disabled:opacity-60"
         >
           {pending ? 'Sending…' : 'Send message'}
         </button>
         <div aria-live="polite" className="text-sm">
-          {state.status === 'success' && <p>Message sent. I&apos;ll reply to the email address you gave.</p>}
-          {state.status === 'error' && <p className={errorText}>{state.message}</p>}
+          {state.status === 'success' && (
+            <p key="success" className="status-in">
+              Message sent. I&apos;ll reply to the email address you gave.
+            </p>
+          )}
+          {state.status === 'error' && (
+            <p key={state.message} className={cn('status-in', errorText)}>
+              {state.message}
+            </p>
+          )}
         </div>
       </div>
     </form>

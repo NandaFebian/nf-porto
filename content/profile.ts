@@ -22,4 +22,5 @@ export const profile = profileSchema.parse({
   // Sections on /about stay hidden while these are empty.
   experience: [],
   publications: [],
+  certifications: [],
 });

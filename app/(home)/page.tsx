@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { CvLink } from '@/components/cv-link';
 import { Pending } from '@/components/pending';
 import { PersonJsonLd } from '@/components/person-json-ld';
-import { ProjectCard, ProjectCover, StackList, StatusLabel } from '@/components/project-card';
+import { ProjectCard, ProjectCover, ProjectTitleLink, StackList, StatusLabel } from '@/components/project-card';
+import { SharedProjectTitle } from '@/components/shared-title';
+import { SpotlightName } from '@/components/spotlight-name';
 import { SpecList } from '@/components/spec-list';
 import { profile } from '@/content/profile';
 import { skillLevels } from '@/lib/content-schema';
@@ -31,16 +33,17 @@ export default function HomePage() {
       <section className="grid gap-10 pt-12 pb-14 md:pt-20 md:pb-20 lg:grid-cols-[1fr_20rem] lg:items-end lg:gap-16">
         <div>
           <p className="text-fd-muted-foreground">{profile.role}</p>
-          <h1 className="mt-2 text-[clamp(2.5rem,8vw,5rem)] leading-[0.95] font-semibold tracking-tight">
-            {profile.name}
-          </h1>
+          <SpotlightName
+            name={profile.name}
+            className="mt-2 w-fit text-[clamp(2.5rem,8vw,5rem)] leading-[0.95] font-semibold tracking-tight"
+          />
           <p className="mt-6 max-w-xl text-lg">
             {isPlaceholder(profile.tagline) ? <Pending what="tagline" /> : profile.tagline}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               href="/projects"
-              className="inline-flex min-h-11 items-center rounded-md bg-brick px-5 text-sm font-medium text-brick-foreground transition-opacity hover:opacity-90"
+              className="inline-flex min-h-11 items-center rounded-md bg-brick px-5 text-sm font-medium text-brick-foreground transition-[opacity,transform] duration-150 hover:opacity-90 active:scale-[0.97]"
             >
               View projects
             </Link>
@@ -77,14 +80,11 @@ export default function HomePage() {
                 </span>
                 <StatusLabel status={lead.status} />
               </div>
-              <h3 className="text-2xl font-semibold leading-tight tracking-tight md:text-3xl">
-                <Link
-                  href={lead.url}
-                  className="underline-offset-4 after:absolute after:inset-0 after:content-[''] group-hover:underline"
-                >
-                  {lead.title}
-                </Link>
-              </h3>
+              <SharedProjectTitle url={lead.url}>
+                <h3 className="w-fit text-2xl font-semibold leading-tight tracking-tight md:text-3xl">
+                  <ProjectTitleLink project={lead} />
+                </h3>
+              </SharedProjectTitle>
               <p className="text-fd-muted-foreground">{lead.summary}</p>
               <SpecList items={[{ label: 'role', value: lead.role }]} />
               <StackList stack={lead.stack} className="mt-auto" />
@@ -110,7 +110,10 @@ export default function HomePage() {
             <h2 id="core-skills" className="text-xl font-semibold">
               Core skills
             </h2>
-            <Link href="/skills" className="mt-1 inline-flex min-h-11 items-center text-sm underline underline-offset-4">
+            <Link
+              href="/skills"
+              className="mt-1 inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+            >
               Full list with levels
             </Link>
           </div>

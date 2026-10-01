@@ -6,6 +6,8 @@
 
 # test & build
 /coverage
+/test-results/
+/playwright-report/
 /.next/
 /out/
 /build
@@ -25,6 +27,6 @@ yarn-error.log*
 .vercel
 next-env.d.ts
 # local PRD
-AGENTS.md
-CLAUDE.md
-.claude/
+aAGENTS.md
+aCLAUDE.md
+a.claude/

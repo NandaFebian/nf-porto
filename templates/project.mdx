@@ -30,7 +30,14 @@ What you personally owned: design, implementation, deployment, team size.
 
 ## Architecture
 
-Main components and how data flows between them.
+Main components and how data flows between them. A Mermaid code block renders as a diagram:
+
+```mermaid
+flowchart LR
+  client[Client] --> api[API] --> db[(Database)]
+```
+
+Images in `public/projects/<slug>/` can be zoomed on click: `![Alt text](/projects/<slug>/screen.png)`
 
 ## Tech Stack
 

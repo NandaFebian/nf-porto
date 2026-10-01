@@ -23,6 +23,32 @@ export type ContactState =
       values?: Partial<Record<ContactField, string>>;
     };
 
+/**
+ * Checks a Turnstile token with Cloudflare. Tokens are single-use and expire after 300 seconds.
+ * Returns false on any network or API failure, so a Cloudflare outage blocks sends instead of letting bots through.
+ */
+export async function verifyTurnstile(
+  token: string,
+  secret: string,
+  ip?: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<boolean> {
+  if (!token) return false;
+  const body = new URLSearchParams({ secret, response: token });
+  if (ip) body.set('remoteip', ip);
+  try {
+    const response = await fetchImpl('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body,
+    });
+    if (!response.ok) return false;
+    const result = (await response.json()) as { success?: boolean };
+    return result.success === true;
+  } catch {
+    return false;
+  }
+}
+
 /** Sliding-window limiter. In-memory, so each server instance counts separately. */
 export function createRateLimiter(limit: number, windowMs: number) {
   const hits = new Map<string, number[]>();

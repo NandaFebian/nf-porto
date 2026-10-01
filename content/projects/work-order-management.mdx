@@ -28,7 +28,14 @@ TODO: describe what you owned.
 
 ## Architecture
 
-TODO: describe the main modules and how tenant isolation works.
+TODO: describe the main modules and how tenant isolation works. Diagrams are written as Mermaid code blocks:
+
+```mermaid
+flowchart LR
+  client[Client app] -->|JWT with tenantId| guard[TenantGuard]
+  guard --> api[NestJS modules]
+  api -->|queries scoped by tenantId| db[(MongoDB)]
+```
 
 ## Tech Stack
 

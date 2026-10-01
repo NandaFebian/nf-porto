@@ -2,6 +2,7 @@ import { source } from '@/lib/source';
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page';
 import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/components/mdx';
+import { SharedProjectTitle } from '@/components/shared-title';
 import type { Metadata } from 'next';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 
@@ -16,7 +17,9 @@ export default async function Page(props: PageProps<'/projects/[slug]'>) {
 
   return (
     <DocsPage toc={data.toc} full={data.full}>
-      <DocsTitle>{data.title}</DocsTitle>
+      <SharedProjectTitle url={page.url}>
+        <DocsTitle className="w-fit">{data.title}</DocsTitle>
+      </SharedProjectTitle>
       <DocsDescription className="mb-0">{data.summary}</DocsDescription>
       <dl className="grid grid-cols-2 gap-x-6 gap-y-2 border-b pb-6 text-sm sm:grid-cols-4">
         <div>

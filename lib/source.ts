@@ -1,6 +1,8 @@
 import { loader } from 'fumadocs-core/source';
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
 import { defineDocs } from 'fumadocs-mdx/macro';
+import { applyMdxPreset } from 'fumadocs-mdx/config';
+import { remarkMdxMermaid } from 'fumadocs-core/mdx-plugins/remark-mdx-mermaid';
 import { metaSchema } from 'fumadocs-core/source/schema';
 import { projectsRoute } from './shared';
 import { projectSchema } from './project-schema';
@@ -10,6 +12,8 @@ const projects = defineDocs({
   dir: 'content/projects',
   docs: {
     schema: projectSchema,
+    // Collection-level options replace the defaults, so start from the Fumadocs preset.
+    mdxOptions: applyMdxPreset({ remarkPlugins: (plugins) => [...plugins, remarkMdxMermaid] }),
   },
   meta: {
     schema: metaSchema,

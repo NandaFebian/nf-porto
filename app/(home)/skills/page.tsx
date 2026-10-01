@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { skillLevels } from '@/lib/content-schema';
-import { getSkillsByCategory } from '@/lib/skills';
+import { getSkillsByCategory, skillAnchor } from '@/lib/skills';
 
 export const metadata: Metadata = {
   title: 'Skills',
@@ -16,7 +16,11 @@ function LevelMeter({ level }: { level: (typeof skillLevels)[number] }) {
         {skillLevels.map((_, index) => (
           <span
             key={index}
-            className={index < filled ? 'h-2.5 w-1.5 bg-fd-foreground' : 'h-2.5 w-1.5 border border-fd-muted-foreground'}
+            className={
+              index < filled
+                ? 'meter-fill h-2.5 w-1.5 bg-fd-foreground'
+                : 'h-2.5 w-1.5 border border-fd-muted-foreground'
+            }
           />
         ))}
       </span>
@@ -32,8 +36,8 @@ export default function SkillsPage() {
     <div className="mx-auto w-full max-w-6xl px-4 pt-10 pb-20 sm:px-6 md:pt-16">
       <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">Skills</h1>
       <p className="mt-3 max-w-prose text-fd-muted-foreground">
-        Grouped by area, with a level for each. Where a published project uses a skill, the project is linked
-        so you can see the work behind the level.
+        Grouped by area, with a level for each. Where a published project uses a skill, the project is linked so you can
+        see the work behind the level.
       </p>
 
       {groups.length === 0 ? (
@@ -53,7 +57,8 @@ export default function SkillsPage() {
                 {group.skills.map((skill) => (
                   <li
                     key={skill.name}
-                    className="grid gap-x-6 gap-y-1 py-3 first:pt-0 sm:grid-cols-[minmax(8rem,12rem)_10rem_1fr] sm:items-baseline"
+                    id={skillAnchor(skill.name)}
+                    className="target-flash -mx-2 grid scroll-mt-20 gap-x-6 rounded-md px-2 gap-y-1 py-3 first:pt-0 sm:grid-cols-[minmax(8rem,12rem)_10rem_1fr] sm:items-baseline"
                   >
                     <span className="font-medium">{skill.name}</span>
                     <LevelMeter level={skill.level} />

@@ -1,9 +1,38 @@
 import { describe, expect, it } from 'vitest';
-import { contactSchema, createRateLimiter } from './contact';
+import { contactSchema, createRateLimiter, verifyTurnstile } from './contact';
+
+describe('verifyTurnstile', () => {
+  const respond = (init: { ok?: boolean; json?: unknown; throws?: boolean }) =>
+    (async (_url: string | URL | Request, options?: RequestInit) => {
+      if (init.throws) throw new Error('network down');
+      respond.lastBody = options?.body as URLSearchParams;
+      return { ok: init.ok ?? true, json: async () => init.json } as Response;
+    }) as typeof fetch;
+  respond.lastBody = undefined as URLSearchParams | undefined;
+
+  it('passes the token, secret, and IP to Cloudflare and accepts success', async () => {
+    expect(await verifyTurnstile('tok', 'sec', '1.2.3.4', respond({ json: { success: true } }))).toBe(true);
+    expect(respond.lastBody?.get('response')).toBe('tok');
+    expect(respond.lastBody?.get('secret')).toBe('sec');
+    expect(respond.lastBody?.get('remoteip')).toBe('1.2.3.4');
+  });
+
+  it('rejects a missing token, a failed check, an HTTP error, and a network error', async () => {
+    const ok = respond({ json: { success: true } });
+    expect(await verifyTurnstile('', 'sec', undefined, ok)).toBe(false);
+    expect(await verifyTurnstile('tok', 'sec', undefined, respond({ json: { success: false } }))).toBe(false);
+    expect(await verifyTurnstile('tok', 'sec', undefined, respond({ ok: false }))).toBe(false);
+    expect(await verifyTurnstile('tok', 'sec', undefined, respond({ throws: true }))).toBe(false);
+  });
+});
 
 describe('contactSchema', () => {
   it('accepts a valid message and trims whitespace', () => {
-    const result = contactSchema.parse({ name: '  Ana ', email: 'ana@example.com', message: 'Hello, is this still open?' });
+    const result = contactSchema.parse({
+      name: '  Ana ',
+      email: 'ana@example.com',
+      message: 'Hello, is this still open?',
+    });
     expect(result.name).toBe('Ana');
   });
 

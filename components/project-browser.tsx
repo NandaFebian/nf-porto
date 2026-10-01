@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { ViewTransition } from 'react';
 import { ProjectCard } from '@/components/project-card';
 import { cn } from '@/lib/cn';
 import type { ProjectSummary } from '@/lib/public-files';
@@ -29,7 +30,7 @@ function FilterButton({
       aria-pressed={pressed}
       onClick={onClick}
       className={cn(
-        'min-h-11 rounded-md border px-3 text-sm transition-colors',
+        'min-h-11 rounded-md border px-3 text-sm transition-[color,background-color,border-color,transform] duration-150 active:scale-[0.96]',
         pressed
           ? 'border-brick bg-brick text-brick-foreground'
           : 'text-fd-muted-foreground hover:border-fd-foreground/40 hover:text-fd-foreground',
@@ -78,14 +79,22 @@ export function ProjectBrowserView({
   const clear = () => onChange?.({ tags: [] });
 
   if (projects.length === 0) {
-    return <p className="text-fd-muted-foreground">No projects are published yet. New ones appear here once their MDX file is added.</p>;
+    return (
+      <p className="text-fd-muted-foreground">
+        No projects are published yet. New ones appear here once their MDX file is added.
+      </p>
+    );
   }
 
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-4 border-y py-5">
         {categories.length > 1 && (
-          <div role="group" aria-labelledby="filter-type" className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4">
+          <div
+            role="group"
+            aria-labelledby="filter-type"
+            className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4"
+          >
             <span id="filter-type" className="font-mono text-xs text-fd-muted-foreground sm:w-14 sm:leading-11">
               type
             </span>
@@ -102,7 +111,11 @@ export function ProjectBrowserView({
             </div>
           </div>
         )}
-        <div role="group" aria-labelledby="filter-stack" className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4">
+        <div
+          role="group"
+          aria-labelledby="filter-stack"
+          className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4"
+        >
           <span id="filter-stack" className="font-mono text-xs text-fd-muted-foreground sm:w-14 sm:leading-11">
             stack
           </span>
@@ -129,7 +142,17 @@ export function ProjectBrowserView({
       {results.length > 0 ? (
         <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {results.map((project) => (
-            <ProjectCard key={project.url} project={project} headingLevel="h2" />
+            <ViewTransition
+              key={project.url}
+              name={`card-${project.url.split('/').pop()}`}
+              default="card"
+              enter="card-in"
+              exit="card-out"
+            >
+              <div className="flex flex-col">
+                <ProjectCard project={project} headingLevel="h2" />
+              </div>
+            </ViewTransition>
           ))}
         </div>
       ) : (

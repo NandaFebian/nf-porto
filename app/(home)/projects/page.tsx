@@ -5,7 +5,8 @@ import { getProjectSummaries } from '@/lib/public-files';
 
 export const metadata: Metadata = {
   title: 'Projects',
-  description: 'Every project, filterable by type and tech stack, each with a write-up of the architecture and decisions.',
+  description:
+    'Every project, filterable by type and tech stack, each with a write-up of the architecture and decisions.',
 };
 
 export default function ProjectsPage() {

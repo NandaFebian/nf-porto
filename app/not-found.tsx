@@ -9,8 +9,8 @@ export default function NotFound() {
         <p className="font-mono text-xs text-fd-muted-foreground">404</p>
         <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">This page does not exist</h1>
         <p className="max-w-prose text-fd-muted-foreground">
-          The link may point to a project that was renamed or removed. Every published project is listed on the
-          projects page.
+          The link may point to a project that was renamed or removed. Every published project is listed on the projects
+          page.
         </p>
         <Link
           href="/projects"
