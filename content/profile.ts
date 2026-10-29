@@ -34,7 +34,7 @@ export const profile = profileSchema.parse({
     },
     {
       role: 'Team Member',
-      organization: 'PPK Ormawa 2024 — Nationally Funded Community Empowerment Program',
+      organization: 'PPK Ormawa 2024, Nationally Funded Community Empowerment Program',
       period: 'Jun 2024 – Oct 2024',
       highlights: [
         'Developed and deployed a village website (Laravel) and mobile application (Flutter) to digitize information, public services, and community activities, contributing across backend, frontend, and mobile development.',
@@ -44,7 +44,7 @@ export const profile = profileSchema.parse({
     },
     {
       role: 'Head of Facilities & Infrastructure',
-      organization: 'Maestro FT — Faculty of Engineering Student Journalism Group',
+      organization: 'Maestro FT, Faculty of Engineering Student Journalism Group',
       period: 'Dec 2023 – Jul 2024',
       highlights: [
         'Managed and maintained cameras, laptops, and audio devices, ensuring equipment was ready for activities.',

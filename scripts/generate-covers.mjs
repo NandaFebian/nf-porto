@@ -95,7 +95,7 @@ function Cover({ slug, title, category, year, stack }) {
       },
       h('div', { style: { display: 'flex' } }, key('category'), h('span', null, category)),
       h('div', { style: { display: 'flex' } }, key('year'), h('span', null, year)),
-      h('div', { style: { display: 'flex' } }, key('stack'), h('span', null, stack.join(' · '))),
+      h('div', { style: { display: 'flex' } }, key('stack'), h('span', { style: { flex: 1 } }, stack.join(' · '))),
     ),
   );
 }

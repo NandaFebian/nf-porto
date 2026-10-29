@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "check:images": "node scripts/check-image-sizes.mjs",
-    "covers": "node scripts/generate-covers.mjs"
+    "covers": "node scripts/generate-covers.mjs",
+    "cv:pages": "node scripts/render-cv.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -31,6 +32,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@napi-rs/canvas": "^1.0.13",
     "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/mdx": "^2.0.14",
@@ -39,6 +41,7 @@
     "@types/react-dom": "^19.3.0",
     "eslint": "^9.39.4",
     "eslint-config-next": "16.3.5",
+    "pdfjs-dist": "^6.4.299",
     "postcss": "^8.5.28",
     "prettier": "^3.9.9",
     "tailwindcss": "^4.3.3",

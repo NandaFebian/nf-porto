@@ -180,6 +180,27 @@ test('about page shows the timeline from dated content', async ({ page }) => {
   await expect(timeline.getByRole('link', { name: 'Jehem Meadolan' })).toBeVisible();
 });
 
+test('CV opens as a preview, grows to full screen, and offers the PDF', async ({ page }) => {
+  await page.goto('/about');
+  await page.getByRole('link', { name: 'View CV' }).click();
+  const dialog = page.getByRole('dialog', { name: /CV/ });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toHaveAttribute('data-mode', 'preview');
+  await expect(dialog.getByRole('link', { name: 'Download PDF' })).toHaveAttribute('href', '/cv/nanda-febian-cv.pdf');
+
+  await dialog.getByRole('button', { name: 'Open page 2 in full screen' }).click();
+  await expect(dialog).toHaveAttribute('data-mode', 'full');
+  await expect
+    .poll(() => dialog.evaluate((el) => Math.abs(el.getBoundingClientRect().width - window.innerWidth)))
+    .toBeLessThan(2);
+
+  // Escape leaves full screen first, then closes.
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveAttribute('data-mode', 'preview');
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+});
+
 test('unknown routes return the 404 page with a way back', async ({ page }) => {
   const response = await page.goto('/does-not-exist');
   expect(response?.status()).toBe(404);

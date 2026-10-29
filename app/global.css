@@ -200,3 +200,73 @@ html > body[data-scroll-locked] {
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
 }
+
+/* CV dialog: a centered preview that grows to fill the screen when a page is clicked. */
+.cv-dialog {
+  width: min(760px, 100vw - 32px);
+  height: min(88dvh, 1100px);
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 10px;
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.25);
+}
+
+.cv-dialog[data-mode='full'] {
+  width: 100vw;
+  height: 100dvh;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.cv-dialog::backdrop {
+  background-color: rgb(0 0 0 / 0.55);
+}
+
+:root:has(.cv-dialog[open]) {
+  overflow: hidden;
+}
+
+/* Opening and closing fade and lift; the resize between preview and full screen eases. */
+@media (prefers-reduced-motion: no-preference) {
+  .cv-dialog {
+    transition:
+      width 360ms var(--ease-out),
+      height 360ms var(--ease-out),
+      border-radius 360ms var(--ease-out),
+      opacity 200ms var(--ease-out),
+      translate 200ms var(--ease-out),
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  .cv-dialog:not([open]) {
+    opacity: 0;
+    translate: 0 12px;
+  }
+
+  .cv-dialog::backdrop {
+    transition:
+      background-color 200ms var(--ease-out),
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  .cv-dialog:not([open])::backdrop {
+    background-color: transparent;
+  }
+
+  @starting-style {
+    .cv-dialog[open] {
+      opacity: 0;
+      translate: 0 12px;
+    }
+
+    .cv-dialog[open]::backdrop {
+      background-color: transparent;
+    }
+  }
+}
