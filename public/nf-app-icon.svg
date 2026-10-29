@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>NF — ikon aplikasi / foto profil</title>
+  <rect id="background" width="512" height="512" rx="112" fill="#111214"/>
+  <g id="mark" transform="translate(102.4 136) scale(2.4)">
+    <path id="N" d="M0 100V0h21l39 68.42V0h18v100H57L18 31.58V100z" fill="#F4F2EC"/>
+    <g id="F-arms" fill="#4C6FFF">
+      <rect x="78" y="0" width="50" height="16"/>
+      <rect x="78" y="40" width="34" height="16"/>
+    </g>
+  </g>
+</svg>

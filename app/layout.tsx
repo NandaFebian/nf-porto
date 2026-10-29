@@ -29,8 +29,6 @@ export const metadata: Metadata = {
   title: { default: `${appName}, ${profile.role}`, template: `%s · ${appName}` },
   description: isPlaceholder(profile.tagline) ? `Projects and skills of ${profile.name}.` : profile.tagline,
   openGraph: { siteName: appName, type: 'website' },
-  // TODO: replace with app/icon.svg once there is an approved icon; this stops the /favicon.ico 404.
-  icons: { icon: 'data:,' },
 };
 
 export default function Layout({ children }: LayoutProps<'/'>) {

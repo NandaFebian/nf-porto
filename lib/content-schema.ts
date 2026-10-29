@@ -28,7 +28,10 @@ export type Skill = z.infer<typeof skillSchema>;
 export const profileSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
+  // Short enough for the home hero, the meta description, and the OG image.
   tagline: z.string().min(1).max(200),
+  // Longer introduction shown on /about in place of the tagline.
+  summary: z.string().min(1).max(1200).optional(),
   location: z.string().min(1),
   email: z.email(),
   cv: z.string().regex(/^\/cv\/.+\.pdf$/),

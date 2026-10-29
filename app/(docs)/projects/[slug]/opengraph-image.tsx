@@ -1,6 +1,7 @@
 import { source } from '@/lib/source';
 import { notFound } from 'next/navigation';
 import { generateOGImage } from 'fumadocs-ui/og';
+import { NfMark, brandBlue } from '@/components/nf-mark';
 import { appName } from '@/lib/shared';
 
 export const size = { width: 1200, height: 630 };
@@ -15,6 +16,9 @@ export default async function Image({ params }: { params: Promise<{ slug: string
     title: page.data.title,
     description: page.data.summary,
     site: appName,
+    icon: <NfMark width={72} color="#F4F2EC" />,
+    primaryColor: `${brandBlue}66`,
+    primaryTextColor: '#F4F2EC',
   });
 }
 

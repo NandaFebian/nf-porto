@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="100" viewBox="0 0 128 100">
+  <title>NF — warna (untuk latar gelap)</title>
+  <path id="N" d="M0 100V0h21l39 68.42V0h18v100H57L18 31.58V100z" fill="#F4F2EC"/>
+  <g id="F-arms" fill="#4C6FFF">
+    <rect id="arm-top" x="78" y="0" width="50" height="16"/>
+    <rect id="arm-mid" x="78" y="40" width="34" height="16"/>
+  </g>
+</svg>

@@ -5,7 +5,9 @@ export const profile = profileSchema.parse({
   name: 'Nanda Febian',
   role: 'Backend Developer · IT Support · Data Administration',
   tagline:
-    'Information Technology graduate who builds secure backend services, keeps systems and devices running for the people who use them, and manages data with precision in Excel and Word.',
+    'Information Technology graduate with practical experience in backend development, IT support, and data administration.',
+  summary:
+    'Information Technology graduate with practical experience in backend development, IT support, and data administration. Developed a NestJS, TypeScript, and MongoDB backend service with JWT authentication, role-based access control, and Swagger documentation as an undergraduate thesis project, and deployed a village website using Laravel. Experienced in hardware and software troubleshooting, operating system installation, network and audiovisual setup, and end-user training. Proficient in Microsoft Excel and Microsoft Word for data management, reporting, and administrative documentation, with leadership experience coordinating 17 committee divisions for a national technology competition.',
   location: 'Denpasar, Bali, Indonesia',
   email: 'nandafbian@gmail.com',
   cv: '/cv/nanda-febian-cv.pdf',

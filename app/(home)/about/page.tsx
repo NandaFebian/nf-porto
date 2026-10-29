@@ -63,8 +63,8 @@ export default function AboutPage() {
     <div className="mx-auto w-full max-w-4xl px-4 pt-10 pb-20 sm:px-6 md:pt-16">
       <PersonJsonLd />
       <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">About</h1>
-      <p className="mt-4 max-w-prose text-lg">
-        <Field value={profile.tagline} what="tagline" />
+      <p className="mt-4 max-w-prose text-base leading-relaxed md:text-lg">
+        <Field value={profile.summary ?? profile.tagline} what="summary" />
       </p>
 
       <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">

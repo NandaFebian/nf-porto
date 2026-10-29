@@ -1,4 +1,5 @@
 import { generateOGImage } from 'fumadocs-ui/og';
+import { NfMark, brandBlue } from '@/components/nf-mark';
 import { profile } from '@/content/profile';
 import { appName, isPlaceholder } from '@/lib/shared';
 
@@ -11,5 +12,8 @@ export default function Image() {
     title: profile.name,
     description: isPlaceholder(profile.tagline) ? profile.role : profile.tagline,
     site: appName,
+    icon: <NfMark width={72} color="#F4F2EC" />,
+    primaryColor: `${brandBlue}66`,
+    primaryTextColor: '#F4F2EC',
   });
 }

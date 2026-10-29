@@ -1,4 +1,5 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import { NfMark } from '@/components/nf-mark';
 import { appName } from './shared';
 
 export const navLinks = [
@@ -11,7 +12,12 @@ export const navLinks = [
 export function baseOptions(): BaseLayoutProps {
   return {
     nav: {
-      title: appName,
+      title: (
+        <span className="inline-flex items-center gap-2.5">
+          <NfMark width={28} />
+          {appName}
+        </span>
+      ),
     },
     links: navLinks.map((link) => ({ ...link, active: 'nested-url' })),
   };

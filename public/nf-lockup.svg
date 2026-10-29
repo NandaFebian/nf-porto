@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="200" viewBox="0 0 720 200">
+  <title>NF — logo + nama (horizontal)</title>
+  <g id="mark" transform="translate(40 40) scale(1.2)">
+    <path id="N" d="M0 100V0h21l39 68.42V0h18v100H57L18 31.58V100z" fill="#111214"/>
+    <g id="F-arms" fill="#4C6FFF">
+      <rect x="78" y="0" width="50" height="16"/>
+      <rect x="78" y="40" width="34" height="16"/>
+    </g>
+  </g>
+  <rect id="divider" x="225" y="52" width="2" height="96" fill="#DDDAD0"/>
+  <text id="name" x="258" y="112" font-family="Space Grotesk" font-weight="700" font-size="56" letter-spacing="-1.1" fill="#111214">Nanda Febian</text>
+  <text id="role" x="260" y="148" font-family="JetBrains Mono" font-size="20" fill="#5E5E64">software developer</text>
+</svg>
