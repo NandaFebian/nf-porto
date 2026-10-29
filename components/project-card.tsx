@@ -22,7 +22,7 @@ export function ProjectCover({
         {project.cover ? (
           <Image
             src={project.cover}
-            alt={`Screenshot of ${project.title}`}
+            alt={`Cover image for ${project.title}`}
             fill
             sizes={sizes}
             priority={priority}

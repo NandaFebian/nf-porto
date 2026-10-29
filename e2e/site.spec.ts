@@ -176,7 +176,8 @@ test('about page shows the timeline from dated content', async ({ page }) => {
   await page.goto('/about');
   const timeline = page.getByRole('region', { name: 'Timeline' });
   await expect(timeline).toBeVisible();
-  await expect(timeline.getByRole('link', { name: 'Multi-tenant Work Order Management' })).toBeVisible();
+  await expect(timeline.getByRole('link', { name: 'Work Order Portal API' })).toBeVisible();
+  await expect(timeline.getByRole('link', { name: 'Jehem Meadolan' })).toBeVisible();
 });
 
 test('unknown routes return the 404 page with a way back', async ({ page }) => {

@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "check:images": "node scripts/check-image-sizes.mjs"
+    "check:images": "node scripts/check-image-sizes.mjs",
+    "covers": "node scripts/generate-covers.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
