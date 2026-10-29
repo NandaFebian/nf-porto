@@ -13,7 +13,8 @@ const projectsDir = path.resolve('content/projects');
 const WIDTH = 1600;
 const HEIGHT = 1000;
 
-const colors = { paper: '#f2f0ec', ink: '#161616', muted: '#5e5e5e', rule: '#d6d2cb', brick: '#a63d24' };
+// Logo kit palette (public/nf-logo-kit.svg); navy marks the .mdx suffix.
+const colors = { paper: '#f4f2ec', ink: '#111214', muted: '#5e5e64', rule: '#dddad0', brand: '#000080' };
 
 /** TTF files from Google Fonts; satori cannot read the woff2 files next/font serves. */
 async function loadFont(family, weight) {
@@ -64,7 +65,7 @@ function Cover({ slug, title, category, year, stack }) {
       'div',
       { style: { display: 'flex', fontFamily: 'Plex Mono', fontSize: 34, color: colors.muted } },
       h('span', null, `content/projects/${slug}`),
-      h('span', { style: { color: colors.brick } }, '.mdx'),
+      h('span', { style: { color: colors.brand } }, '.mdx'),
     ),
     h(
       'div',

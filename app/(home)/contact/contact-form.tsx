@@ -88,7 +88,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex min-h-11 items-center rounded-md bg-brick px-5 text-sm font-medium text-brick-foreground transition-[opacity,transform] duration-150 hover:opacity-90 active:scale-[0.97] disabled:opacity-60"
+          className="inline-flex min-h-11 items-center rounded-md bg-brand px-5 text-sm font-medium text-brand-foreground transition-[opacity,transform] duration-150 hover:opacity-90 active:scale-[0.97] disabled:opacity-60"
         >
           {pending ? 'Sending…' : 'Send message'}
         </button>

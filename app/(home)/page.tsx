@@ -43,7 +43,7 @@ export default function HomePage() {
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               href="/projects"
-              className="inline-flex min-h-11 items-center rounded-md bg-brick px-5 text-sm font-medium text-brick-foreground transition-[opacity,transform] duration-150 hover:opacity-90 active:scale-[0.97]"
+              className="inline-flex min-h-11 items-center rounded-md bg-brand px-5 text-sm font-medium text-brand-foreground transition-[opacity,transform] duration-150 hover:opacity-90 active:scale-[0.97]"
             >
               View projects
             </Link>

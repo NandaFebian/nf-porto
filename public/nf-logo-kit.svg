@@ -5,7 +5,7 @@
     <rect width="480" height="400" rx="24" fill="#111214"/>
     <g transform="translate(80 75) scale(2.5)">
       <path d="M0 100V0h21l39 68.42V0h18v100H57L18 31.58V100z" fill="#F4F2EC"/>
-      <g fill="#4C6FFF"><rect x="78" y="0" width="50" height="16"/><rect x="78" y="40" width="34" height="16"/></g>
+      <g fill="#8080FF"><rect x="78" y="0" width="50" height="16"/><rect x="78" y="40" width="34" height="16"/></g>
     </g>
   </g>
 
@@ -13,12 +13,12 @@
     <rect width="480" height="400" rx="24" fill="#F4F2EC"/>
     <g transform="translate(80 75) scale(2.5)">
       <path d="M0 100V0h21l39 68.42V0h18v100H57L18 31.58V100z" fill="#111214"/>
-      <g fill="#4C6FFF"><rect x="78" y="0" width="50" height="16"/><rect x="78" y="40" width="34" height="16"/></g>
+      <g fill="#000080"><rect x="78" y="0" width="50" height="16"/><rect x="78" y="40" width="34" height="16"/></g>
     </g>
   </g>
 
   <g id="03 Satu warna - di aksen" transform="translate(1040 0)">
-    <rect width="480" height="400" rx="24" fill="#4C6FFF"/>
+    <rect width="480" height="400" rx="24" fill="#000080"/>
     <g transform="translate(80 75) scale(2.5)">
       <path d="M0 100V0h21l39 68.42V0h68v16H78v24h34v16H78v44H57L18 31.58V100z" fill="#FFFFFF"/>
     </g>
@@ -29,7 +29,7 @@
     <g transform="translate(140 130)">
       <g transform="translate(40 40) scale(1.2)">
         <path d="M0 100V0h21l39 68.42V0h18v100H57L18 31.58V100z" fill="#111214"/>
-        <g fill="#4C6FFF"><rect x="78" y="0" width="50" height="16"/><rect x="78" y="40" width="34" height="16"/></g>
+        <g fill="#000080"><rect x="78" y="0" width="50" height="16"/><rect x="78" y="40" width="34" height="16"/></g>
       </g>
       <rect x="225" y="52" width="2" height="96" fill="#DDDAD0"/>
       <text x="258" y="112" font-family="Space Grotesk" font-weight="700" font-size="56" letter-spacing="-1.1" fill="#111214">Nanda Febian</text>
@@ -43,7 +43,7 @@
       <rect width="512" height="512" rx="112" fill="#111214"/>
       <g transform="translate(102.4 136) scale(2.4)">
         <path d="M0 100V0h21l39 68.42V0h18v100H57L18 31.58V100z" fill="#F4F2EC"/>
-        <g fill="#4C6FFF"><rect x="78" y="0" width="50" height="16"/><rect x="78" y="40" width="34" height="16"/></g>
+        <g fill="#8080FF"><rect x="78" y="0" width="50" height="16"/><rect x="78" y="40" width="34" height="16"/></g>
       </g>
     </g>
   </g>

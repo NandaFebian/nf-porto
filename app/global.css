@@ -5,24 +5,56 @@
 @theme inline {
   --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
-  --color-brick: var(--brick);
-  --color-brick-foreground: var(--brick-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
 }
 
-/* Brick red from Balinese bata merah; reserved for the primary action, active filters, the hero spotlight, and the jump-to flash. */
+/*
+ * Palette from the NF logo kit (public/nf-logo-kit.svg): ink #111214, paper #F4F2EC, surface #E9E6DD,
+ * rule #DDDAD0, muted #5E5E64, navy #000080. Navy is 1.17:1 on the dark ink, so the dark theme uses
+ * #8080FF, a lighter step of the same hue (5.76:1). The logo's F arms follow the same token.
+ * Navy is reserved for the primary action, active filters, the hero spotlight, and the jump-to flash.
+ */
 :root {
-  --brick: #a63d24;
-  --brick-foreground: #ffffff;
+  --brand: #000080;
+  --brand-foreground: #ffffff;
+  --color-fd-background: #f4f2ec;
+  --color-fd-foreground: #111214;
+  --color-fd-muted: #e9e6dd;
+  --color-fd-muted-foreground: #5e5e64;
+  --color-fd-popover: #faf9f5;
+  --color-fd-popover-foreground: #111214;
+  --color-fd-card: #efece5;
+  --color-fd-card-foreground: #111214;
+  --color-fd-border: #dddad0;
+  --color-fd-primary: #111214;
+  --color-fd-primary-foreground: #f4f2ec;
+  --color-fd-secondary: #e9e6dd;
+  --color-fd-secondary-foreground: #111214;
+  --color-fd-accent: rgb(221 218 208 / 0.7);
+  --color-fd-accent-foreground: #111214;
+  --color-fd-ring: #8b8a86;
 }
 
 .dark {
-  --brick: #e07a5f;
-  --brick-foreground: #121212;
-}
-
-/* Fumadocs' default light muted text is 4.35:1 on its background; this is 5.95:1. */
-:root:not(.dark) {
-  --color-fd-muted-foreground: hsl(0, 0%, 37%);
+  --brand: #8080ff;
+  --brand-foreground: #111214;
+  --color-fd-background: #111214;
+  --color-fd-foreground: #f4f2ec;
+  --color-fd-muted: #1a1b1e;
+  --color-fd-muted-foreground: #a1a1a8;
+  --color-fd-popover: #18191c;
+  --color-fd-popover-foreground: #f4f2ec;
+  --color-fd-card: #16171a;
+  --color-fd-card-foreground: #f4f2ec;
+  --color-fd-border: rgb(244 242 236 / 0.12);
+  --color-fd-primary: #f4f2ec;
+  --color-fd-primary-foreground: #111214;
+  --color-fd-secondary: #1a1b1e;
+  --color-fd-secondary-foreground: #f4f2ec;
+  --color-fd-accent: rgb(244 242 236 / 0.08);
+  --color-fd-accent-foreground: #f4f2ec;
+  --color-fd-ring: #6b6b70;
 }
 
 /* Fumadocs' mobile header controls are 24-34px; lift them to a 44px touch target. */
@@ -155,7 +187,7 @@ html {
 /* The skill row a link or search result jumped to flashes once, then settles. */
 @keyframes target-flash {
   from {
-    background-color: color-mix(in oklab, var(--brick) 22%, transparent);
+    background-color: color-mix(in oklab, var(--brand) 22%, transparent);
   }
 }
 

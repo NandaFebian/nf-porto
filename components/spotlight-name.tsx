@@ -4,7 +4,7 @@ import { useRef, type PointerEvent } from 'react';
 import { cn } from '@/lib/cn';
 
 /**
- * The hero name with a brick-colored copy revealed in a circle around the pointer.
+ * The hero name with a brand-blue copy revealed in a circle around the pointer.
  * The copy is aria-hidden and ignores pointer events, so selection and screen readers see one name.
  */
 export function SpotlightName({ name, className }: { name: string; className?: string }) {
@@ -43,7 +43,7 @@ export function SpotlightName({ name, className }: { name: string; className?: s
       {name}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 text-brick opacity-0 transition-opacity duration-300 select-none group-data-[spot=on]/spot:opacity-100"
+        className="pointer-events-none absolute inset-0 text-brand opacity-0 transition-opacity duration-300 select-none group-data-[spot=on]/spot:opacity-100"
         style={{
           maskImage:
             'radial-gradient(circle 9rem at var(--spot-x, -20rem) var(--spot-y, 50%), #000 35%, transparent 75%)',

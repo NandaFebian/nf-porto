@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { NfMark } from '@/components/nf-mark';
+import { NfMark, brandNavyOnDark } from '@/components/nf-mark';
 
 export const size = { width: 180, height: 180 };
 export const contentType = 'image/png';
@@ -17,7 +17,7 @@ export default function AppleIcon() {
         backgroundColor: '#111214',
       }}
     >
-      <NfMark width={108} color="#F4F2EC" />
+      <NfMark width={108} color="#F4F2EC" armColor={brandNavyOnDark} />
     </div>,
     size,
   );
