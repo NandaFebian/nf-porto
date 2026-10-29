@@ -29,7 +29,7 @@ export function CvLink({ className }: { className?: string }) {
       href={profile.cv}
       download
       className={cn(
-        'inline-flex min-h-11 items-center rounded-md border px-4 text-sm font-medium transition-colors hover:bg-fd-accent',
+        'inline-flex min-h-11 items-center rounded-md border px-4 text-sm font-medium transition-colors hover:border-brand hover:text-brand',
         className,
       )}
     >

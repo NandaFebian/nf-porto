@@ -19,6 +19,13 @@ export interface ProjectSummary {
   featured: boolean;
   /** Null until the cover image is added to `public/`. */
   cover: string | null;
+  /** Dark-theme version of the cover, when one sits beside it; otherwise the cover shows in both themes. */
+  coverDark: string | null;
+}
+
+/** `/projects/x/cover.png` → `/projects/x/cover-dark.png`; scripts/generate-covers.mjs writes the same name. */
+export function darkCoverPath(cover: string): string {
+  return cover.replace(/(\.\w+)$/, '-dark$1');
 }
 
 /** Serializable project data for cards, in `getProjects()` order. */
@@ -34,5 +41,6 @@ export function getProjectSummaries(): ProjectSummary[] {
     stack: data.stack,
     featured: data.featured,
     cover: hasPublicFile(data.cover) ? data.cover : null,
+    coverDark: hasPublicFile(darkCoverPath(data.cover)) ? darkCoverPath(data.cover) : null,
   }));
 }

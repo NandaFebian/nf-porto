@@ -17,6 +17,7 @@ export default async function Page(props: PageProps<'/projects/[slug]'>) {
 
   return (
     <DocsPage toc={data.toc} full={data.full}>
+      <div aria-hidden className="reading-progress" />
       <SharedProjectTitle url={page.url}>
         <DocsTitle className="w-fit">{data.title}</DocsTitle>
       </SharedProjectTitle>

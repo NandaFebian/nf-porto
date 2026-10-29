@@ -1,5 +1,5 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
-import { NfMark } from '@/components/nf-mark';
+import { HeaderMark } from '@/components/header-mark';
 import { appName } from './shared';
 
 export const navLinks = [
@@ -14,7 +14,7 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <span className="inline-flex items-center gap-2.5">
-          <NfMark width={28} />
+          <HeaderMark />
           {appName}
         </span>
       ),

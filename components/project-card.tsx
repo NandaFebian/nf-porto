@@ -11,23 +11,38 @@ export function ProjectCover({
   priority,
   className,
 }: {
-  project: Pick<ProjectSummary, 'title' | 'cover' | 'category'>;
+  project: Pick<ProjectSummary, 'title' | 'cover' | 'coverDark' | 'category'>;
   sizes: string;
   priority?: boolean;
   className?: string;
 }) {
+  const imageClass =
+    'object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100';
   return (
     <TiltSurface className={className}>
       <div className="relative aspect-16/10 overflow-hidden rounded-md border bg-fd-muted transition-colors duration-300 group-hover:border-fd-foreground/30">
         {project.cover ? (
-          <Image
-            src={project.cover}
-            alt={`Cover image for ${project.title}`}
-            fill
-            sizes={sizes}
-            priority={priority}
-            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-          />
+          <>
+            <Image
+              src={project.cover}
+              alt={`Cover image for ${project.title}`}
+              fill
+              sizes={sizes}
+              priority={priority}
+              className={cn(imageClass, project.coverDark && 'dark:hidden')}
+            />
+            {/* The theme is a class on <html>, not a media query, so <picture> cannot pick this one. */}
+            {project.coverDark && (
+              <Image
+                src={project.coverDark}
+                alt={`Cover image for ${project.title}`}
+                fill
+                sizes={sizes}
+                priority={priority}
+                className={cn(imageClass, 'hidden dark:block')}
+              />
+            )}
+          </>
         ) : (
           // TODO: add public/projects/<slug>/cover.png; the label below stays until it exists.
           <div className="flex h-full flex-col justify-end p-4">
@@ -58,7 +73,7 @@ export function StatusLabel({ status }: { status: string }) {
         aria-hidden
         className={cn(
           'size-1.5 rounded-full',
-          status === 'In Progress' ? 'bg-fd-foreground' : 'border border-fd-muted-foreground',
+          status === 'In Progress' ? 'bg-brand' : 'border border-fd-muted-foreground',
         )}
       />
       {status}
@@ -82,7 +97,7 @@ export function StackList({ stack, className }: { stack: string[]; className?: s
 export function ProjectCard({ project, headingLevel = 'h3' }: { project: ProjectSummary; headingLevel?: 'h2' | 'h3' }) {
   const Heading = headingLevel;
   return (
-    <article className="group relative flex flex-col gap-3">
+    <article className="reveal group relative flex flex-col gap-3">
       <ProjectCover project={project} sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" />
       <div className="flex items-baseline justify-between gap-3">
         <span className="font-mono text-xs text-fd-muted-foreground">

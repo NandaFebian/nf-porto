@@ -33,7 +33,7 @@ function FilterButton({
         'min-h-11 rounded-md border px-3 text-sm transition-[color,background-color,border-color,transform] duration-150 active:scale-[0.96]',
         pressed
           ? 'border-brand bg-brand text-brand-foreground'
-          : 'text-fd-muted-foreground hover:border-fd-foreground/40 hover:text-fd-foreground',
+          : 'text-fd-muted-foreground hover:border-brand/60 hover:text-brand',
       )}
     >
       {children}

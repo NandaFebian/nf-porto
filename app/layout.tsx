@@ -4,6 +4,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import './global.css';
 import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
+import { ThemeReveal } from '@/components/theme-reveal';
 import { profile } from '@/content/profile';
 import { appName, isPlaceholder, siteUrl } from '@/lib/shared';
 
@@ -36,6 +37,7 @@ export default function Layout({ children }: LayoutProps<'/'>) {
     <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
         <RootProvider>{children}</RootProvider>
+        <ThemeReveal />
         {onVercel && (
           <>
             <Analytics />

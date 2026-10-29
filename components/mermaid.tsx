@@ -15,6 +15,7 @@ export function Mermaid({ chart }: { chart: string }) {
   const box = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [state, setState] = useState<State>({ status: 'loading' });
+  const drawn = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const element = box.current;
@@ -54,6 +55,31 @@ export function Mermaid({ chart }: { chart: string }) {
     };
   }, [chart, id, resolvedTheme, visible]);
 
+  // Edges draw along their path and nodes fade in, in document order, once most of the diagram is visible.
+  useEffect(() => {
+    const element = drawn.current;
+    if (state.status !== 'ready' || !element) return;
+    element.querySelectorAll('.flowchart-link').forEach((edge, index) => {
+      edge.setAttribute('pathLength', '1');
+      (edge as SVGElement).style.setProperty('--order', String(index));
+    });
+    element.querySelectorAll<SVGElement>('.node, .edgeLabel').forEach((node, index) => {
+      node.style.setProperty('--order', String(index));
+    });
+    element.dataset.drawn = 'false';
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          element.dataset.drawn = 'true';
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [state]);
+
   if (state.status === 'error') {
     return (
       <div role="alert" className="not-prose my-6 rounded-md border p-4 text-sm">
@@ -77,7 +103,8 @@ export function Mermaid({ chart }: { chart: string }) {
 
   return (
     <div
-      className="not-prose my-6 overflow-x-auto rounded-md border p-4 [&_svg]:mx-auto [&_svg]:h-auto [&_svg]:max-w-full"
+      ref={drawn}
+      className="diagram-draw not-prose my-6 overflow-x-auto rounded-md border p-4 [&_svg]:mx-auto [&_svg]:h-auto [&_svg]:max-w-full"
       dangerouslySetInnerHTML={{ __html: state.svg }}
     />
   );

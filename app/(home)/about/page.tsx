@@ -20,7 +20,10 @@ function Field({ value, what }: { value: string; what: string }) {
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section aria-labelledby={id} className="grid gap-4 border-t pt-6 md:grid-cols-[12rem_1fr] md:gap-8">
+    <section
+      aria-labelledby={id}
+      className="reveal accent-rule grid gap-4 border-t pt-6 md:grid-cols-[12rem_1fr] md:gap-8"
+    >
       <h2 id={id} className="text-lg font-semibold">
         {title}
       </h2>
@@ -180,7 +183,7 @@ export default function AboutPage() {
                   <p className="relative font-mono text-xs text-fd-muted-foreground">
                     <span
                       aria-hidden
-                      className="absolute top-1/2 left-[calc(-1.5rem-0.5px)] size-2 -translate-y-1/2 rounded-full border-2 border-fd-background bg-fd-foreground"
+                      className="absolute top-1/2 left-[calc(-1.5rem-0.5px)] size-2 -translate-y-1/2 rounded-full border-2 border-fd-background bg-brand"
                     />
                     {group.year}
                   </p>

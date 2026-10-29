@@ -17,9 +17,7 @@ function LevelMeter({ level }: { level: (typeof skillLevels)[number] }) {
           <span
             key={index}
             className={
-              index < filled
-                ? 'meter-fill h-2.5 w-1.5 bg-fd-foreground'
-                : 'h-2.5 w-1.5 border border-fd-muted-foreground'
+              index < filled ? 'meter-fill h-2.5 w-1.5 bg-brand' : 'h-2.5 w-1.5 border border-fd-muted-foreground'
             }
           />
         ))}
@@ -48,7 +46,7 @@ export default function SkillsPage() {
             <section
               key={group.category}
               aria-labelledby={`skills-${group.category}`}
-              className="grid gap-4 border-t pt-6 lg:grid-cols-[12rem_1fr] lg:gap-8"
+              className="reveal accent-rule grid gap-4 border-t pt-6 lg:grid-cols-[12rem_1fr] lg:gap-8"
             >
               <h2 id={`skills-${group.category}`} className="text-lg font-semibold">
                 {group.category}

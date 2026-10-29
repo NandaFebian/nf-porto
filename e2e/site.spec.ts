@@ -147,6 +147,49 @@ test.describe('motion', () => {
     await expect(name).toHaveAttribute('data-spot', 'off');
   });
 
+  test('hero steps in on load, and not under reduced motion', async ({ page }) => {
+    const animation = () =>
+      page
+        .locator('.hero-step')
+        .first()
+        .evaluate((el) => getComputedStyle(el).animationName);
+    await page.goto('/');
+    expect(await animation()).toBe('rise-in');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    expect(await animation()).toBe('none');
+  });
+
+  test('reading progress fills as a project page scrolls', async ({ page }) => {
+    await page.goto('/projects/work-order-management');
+    const width = () => page.locator('.reading-progress').evaluate((el) => el.getBoundingClientRect().width);
+    expect(await width()).toBeLessThan(5);
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect.poll(width).toBeGreaterThan(page.viewportSize()!.width * 0.95);
+  });
+
+  test('theme toggle grows the new theme from where it was pressed', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'the toggle sits in the collapsed menu on mobile');
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    const html = page.locator('html');
+    const wasDark = await html.evaluate((el) => el.classList.contains('dark'));
+    await page.locator('#nd-nav [data-theme-toggle]').first().click();
+    await expect(html).toHaveClass(/theme-switching/);
+    expect(await html.evaluate((el) => el.style.getPropertyValue('--vt-x'))).toMatch(/px$/);
+    await expect.poll(() => html.evaluate((el) => el.classList.contains('dark'))).toBe(!wasDark);
+    await expect(html).not.toHaveClass(/theme-switching/);
+  });
+
+  test('diagram draws once it is in view', async ({ page }) => {
+    await page.goto('/projects/work-order-management');
+    await page.getByText('Drawing diagram…').scrollIntoViewIfNeeded();
+    const diagram = page.locator('.diagram-draw');
+    await diagram.scrollIntoViewIfNeeded();
+    await expect(diagram).toHaveAttribute('data-drawn', 'true');
+    expect(await diagram.locator('.flowchart-link').first().getAttribute('pathLength')).toBe('1');
+  });
+
   test('card cover tilts toward the pointer, and not under reduced motion', async ({ page, isMobile }) => {
     test.skip(isMobile, 'pointer hover');
     const tilt = () =>
@@ -199,6 +242,22 @@ test('CV opens as a preview, grows to full screen, and offers the PDF', async ({
   await expect(dialog).toHaveAttribute('data-mode', 'preview');
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
+});
+
+test('project covers follow the theme', async ({ page }) => {
+  const visibleCover = () =>
+    page
+      .locator('article img')
+      .first()
+      .evaluate(
+        () => [...document.querySelectorAll<HTMLImageElement>('article img')].find((img) => img.checkVisibility())?.src,
+      );
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/projects');
+  await expect.poll(visibleCover).toContain('cover-dark.png');
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.goto('/projects');
+  await expect.poll(visibleCover).not.toContain('cover-dark.png');
 });
 
 test('unknown routes return the 404 page with a way back', async ({ page }) => {

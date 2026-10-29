@@ -27,13 +27,14 @@
   --color-fd-card: #efece5;
   --color-fd-card-foreground: #111214;
   --color-fd-border: #dddad0;
-  --color-fd-primary: #111214;
-  --color-fd-primary-foreground: #f4f2ec;
+  /* Fumadocs draws active states (sidebar, TOC, search, prose links) in primary, so those turn navy too. */
+  --color-fd-primary: var(--brand);
+  --color-fd-primary-foreground: var(--brand-foreground);
   --color-fd-secondary: #e9e6dd;
   --color-fd-secondary-foreground: #111214;
   --color-fd-accent: rgb(221 218 208 / 0.7);
   --color-fd-accent-foreground: #111214;
-  --color-fd-ring: #8b8a86;
+  --color-fd-ring: var(--brand);
 }
 
 .dark {
@@ -48,13 +49,13 @@
   --color-fd-card: #16171a;
   --color-fd-card-foreground: #f4f2ec;
   --color-fd-border: rgb(244 242 236 / 0.12);
-  --color-fd-primary: #f4f2ec;
-  --color-fd-primary-foreground: #111214;
+  --color-fd-primary: var(--brand);
+  --color-fd-primary-foreground: var(--brand-foreground);
   --color-fd-secondary: #1a1b1e;
   --color-fd-secondary-foreground: #f4f2ec;
   --color-fd-accent: rgb(244 242 236 / 0.08);
   --color-fd-accent-foreground: #f4f2ec;
-  --color-fd-ring: #6b6b70;
+  --color-fd-ring: var(--brand);
 }
 
 /* Fumadocs' mobile header controls are 24-34px; lift them to a 44px touch target. */
@@ -65,16 +66,82 @@
   }
 }
 
+/*
+ * Navy marks two things: what can be clicked or is active (links, nav, filters, focus, selection),
+ * and structure (the rule opening each section, skill meters, timeline dots, diagram edges).
+ */
 :focus-visible {
-  outline: 2px solid var(--color-fd-foreground);
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
+}
+
+::selection {
+  background-color: color-mix(in oklab, var(--brand) 24%, transparent);
+}
+
+#nd-nav a[data-active='true'] {
+  color: var(--brand);
+}
+
+/* Underlined links: a navy underline that takes over the text color on hover. */
+a.underline {
+  text-decoration-color: color-mix(in oklab, var(--brand) 55%, transparent);
+  text-decoration-thickness: 1.5px;
+  transition:
+    color 150ms,
+    text-decoration-color 150ms;
+}
+
+a.underline:hover {
+  color: var(--brand);
+  text-decoration-color: var(--brand);
+}
+
+/* A short navy rule over the start of a section's top border. It grows in as the section scrolls in. */
+.accent-rule {
+  position: relative;
+}
+
+.accent-rule::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 3rem;
+  height: 2px;
+  background: var(--brand);
+  transform-origin: left;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .accent-rule {
+      view-timeline: --section block;
+    }
+    .accent-rule::before {
+      animation: rule-grow linear both;
+      animation-timeline: --section;
+      animation-range: entry 40px entry 220px;
+    }
+  }
+}
+
+@keyframes rule-grow {
+  from {
+    scale: 0 1;
+  }
 }
 
 html {
   scrollbar-gutter: stable;
 }
 
-/* Motion (dial 2): every animation below marks a change the reader caused. */
+/*
+ * Motion (dial 3): animations mark a change the reader caused (navigation, filters, theme, hover)
+ * or pace a first look (hero on load, sections as they scroll in, diagrams as they come into view).
+ * Each runs once; nothing loops. Everything is off under prefers-reduced-motion except the reading
+ * progress bar, which moves only as fast as the reader scrolls.
+ */
 :root {
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -197,16 +264,16 @@ html {
 
 /* Link underline that draws in from the left. */
 .draw-underline {
-  background-image: linear-gradient(currentColor, currentColor);
+  background-image: linear-gradient(var(--brand), var(--brand));
   background-repeat: no-repeat;
   background-position: 0 100%;
-  background-size: 0% 1px;
+  background-size: 0% 2px;
   transition: background-size 320ms var(--ease-out);
 }
 
 :is(.group:hover, .group:focus-within) .draw-underline,
 .draw-underline:hover {
-  background-size: 100% 1px;
+  background-size: 100% 2px;
 }
 
 /* Skill meters fill as the row scrolls into view, where scroll-driven animation is supported. */
@@ -301,4 +368,165 @@ html > body[data-scroll-locked] {
       background-color: transparent;
     }
   }
+}
+
+/* Hero: one top-to-bottom pass on load, so the eye reads role, name, pitch, then the actions. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-step {
+    animation: rise-in 620ms var(--ease-out) both;
+    animation-delay: calc(var(--step, 0) * 80ms + 60ms);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+/* Logo: the F arms grow out of the N on load (hover replays it from components/nf-mark.tsx). */
+.nf-arm {
+  transform-box: fill-box;
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nf-mark-animated .nf-arm {
+    animation: arm-in 560ms var(--ease-out) both;
+    animation-delay: calc(var(--arm, 0) * 90ms + 200ms);
+  }
+}
+
+@keyframes arm-in {
+  from {
+    scale: 0 1;
+  }
+}
+
+/* Sections and cards rise in as they enter the viewport. Without scroll timelines they are simply there. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      /* A fixed distance, so tall blocks that start half in view are not left faded until scrolled. */
+      animation-range: entry 0 entry 120px;
+    }
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+  }
+}
+
+/* Project pages: a navy hairline that fills as the case study is read. */
+.reading-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .reading-progress {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 60;
+    height: 3px;
+    background: var(--brand);
+    transform-origin: left;
+    pointer-events: none;
+    animation: reading-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes reading-progress {
+  from {
+    scale: 0 1;
+  }
+}
+
+/* Arrow on a link nudges toward where the link goes. */
+.nudge-arrow {
+  transition: translate 220ms var(--ease-out);
+}
+
+:is(a, button):is(:hover, :focus-visible) .nudge-arrow {
+  translate: 3px 0;
+}
+
+/* Theme switch: the new theme spreads in a circle from the toggle that was pressed. */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-switching::view-transition-old(root),
+  html.theme-switching::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+  html.theme-switching::view-transition-old(root) {
+    animation: none;
+  }
+  html.theme-switching::view-transition-new(root) {
+    animation: theme-reveal 600ms var(--ease-out) both;
+  }
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--vt-x, 100%) var(--vt-y, 0));
+  }
+  to {
+    clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 100%) var(--vt-y, 0));
+  }
+}
+
+/* Mermaid diagrams: edges draw along their path and nodes fade in once the diagram is in view. */
+@media (prefers-reduced-motion: no-preference) {
+  .diagram-draw .flowchart-link {
+    stroke-dasharray: 1;
+    transition:
+      stroke-dashoffset 700ms var(--ease-out),
+      opacity 150ms linear;
+    transition-delay: calc(var(--order, 0) * 140ms + 200ms);
+  }
+  .diagram-draw :is(.node, .edgeLabel) {
+    transition:
+      opacity 400ms var(--ease-out),
+      translate 400ms var(--ease-out);
+    transition-delay: calc(var(--order, 0) * 140ms);
+  }
+  .diagram-draw[data-drawn='false'] .flowchart-link {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  .diagram-draw[data-drawn='false'] :is(.node, .edgeLabel) {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+/* Diagram edges and arrowheads in navy. Mermaid scopes its own styles by id, hence !important. */
+.diagram-draw .flowchart-link {
+  stroke: var(--brand) !important;
+}
+
+.diagram-draw marker path {
+  fill: var(--brand) !important;
+  stroke: var(--brand) !important;
+}
+
+/* Case study headings open with the same short navy rule as the site's sections. */
+.prose h2 {
+  position: relative;
+}
+
+.prose h2::before {
+  content: '';
+  position: absolute;
+  top: -0.75rem;
+  left: 0;
+  width: 2rem;
+  height: 2px;
+  background: var(--brand);
 }

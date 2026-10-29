@@ -1,5 +1,7 @@
-// Writes a typographic cover (title, category, year, stack) for each project that has no cover yet.
-// Existing files are kept, so a real screenshot dropped in later is never overwritten; pass --force to regenerate.
+// Writes a typographic cover (title, category, year, stack) for each project that has no cover yet,
+// in a light version at the frontmatter `cover` path and a dark one beside it (`cover-dark.png`).
+// Existing covers are kept, so a real screenshot dropped in later is never overwritten, and no dark
+// version is added next to it; pass --force to regenerate both.
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -13,8 +15,11 @@ const projectsDir = path.resolve('content/projects');
 const WIDTH = 1600;
 const HEIGHT = 1000;
 
-// Logo kit palette (public/nf-logo-kit.svg); navy marks the .mdx suffix.
-const colors = { paper: '#f4f2ec', ink: '#111214', muted: '#5e5e64', rule: '#dddad0', brand: '#000080' };
+// Logo kit palette (public/nf-logo-kit.svg), matching the site's light and dark themes; navy marks the .mdx suffix.
+const palettes = {
+  light: { paper: '#f4f2ec', ink: '#111214', muted: '#5e5e64', rule: '#dddad0', brand: '#000080' },
+  dark: { paper: '#111214', ink: '#f4f2ec', muted: '#a1a1a8', rule: '#2c2d31', brand: '#8080ff' },
+};
 
 /** TTF files from Google Fonts; satori cannot read the woff2 files next/font serves. */
 async function loadFont(family, weight) {
@@ -44,7 +49,7 @@ function readFrontmatter(file) {
 
 const h = React.createElement;
 
-function Cover({ slug, title, category, year, stack }) {
+function Cover({ slug, title, category, year, stack, colors }) {
   const key = (label) => h('span', { style: { width: 230, flexShrink: 0, color: colors.muted } }, label);
   return h(
     'div',
@@ -118,8 +123,16 @@ for (const file of readdirSync(projectsDir).filter((name) => name.endsWith('.mdx
     console.log(`keep ${target}`);
     continue;
   }
-  const image = new ImageResponse(h(Cover, { slug, ...data }), { width: WIDTH, height: HEIGHT, fonts });
+  // Same naming as darkCoverPath() in lib/public-files.ts.
+  const targets = { light: target, dark: target.replace(/(\.\w+)$/, '-dark$1') };
   mkdirSync(path.dirname(target), { recursive: true });
-  writeFileSync(target, Buffer.from(await image.arrayBuffer()));
-  console.log(`wrote ${target}`);
+  for (const [theme, file] of Object.entries(targets)) {
+    const image = new ImageResponse(h(Cover, { slug, ...data, colors: palettes[theme] }), {
+      width: WIDTH,
+      height: HEIGHT,
+      fonts,
+    });
+    writeFileSync(file, Buffer.from(await image.arrayBuffer()));
+    console.log(`wrote ${file}`);
+  }
 }
