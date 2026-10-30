@@ -1,13 +1,11 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-metadata';
 import { Pending } from '@/components/pending';
 import { profile } from '@/content/profile';
 import { isPlaceholder } from '@/lib/shared';
 import { ContactForm } from './contact-form';
 
-export const metadata: Metadata = {
-  title: 'Contact',
-  description: `Send ${profile.name} a message about a role, a freelance project, or research.`,
-};
+export const metadata: Metadata = pageMetadata('contact');
 
 export default function ContactPage() {
   const channels = [

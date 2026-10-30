@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/components/mdx';
 import { SharedProjectTitle } from '@/components/shared-title';
 import type { Metadata } from 'next';
+import { appName } from '@/lib/shared';
+import { ogImageUrl, socialMetadata } from '@/lib/site-metadata';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 
 export default async function Page(props: PageProps<'/projects/[slug]'>) {
@@ -95,5 +97,12 @@ export async function generateMetadata(props: PageProps<'/projects/[slug]'>): Pr
   return {
     title: page.data.title,
     description: page.data.summary,
+    ...socialMetadata({
+      title: `${page.data.title} · ${appName}`,
+      description: page.data.summary,
+      path: page.url,
+      image: ogImageUrl.project(slug),
+      imageAlt: `${page.data.title}: ${page.data.role}, ${page.data.year}`,
+    }),
   };
 }

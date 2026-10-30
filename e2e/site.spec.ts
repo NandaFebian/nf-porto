@@ -244,6 +244,29 @@ test('CV opens as a preview, grows to full screen, and offers the PDF', async ({
   await expect(dialog).toBeHidden();
 });
 
+test('every page has a link preview image that LinkedIn and WhatsApp can use', async ({ page, request }) => {
+  for (const path of pages) {
+    await page.goto(path);
+    const meta = (property: string) =>
+      page.locator(`meta[property="${property}"]`).first().getAttribute('content', { timeout: 2000 });
+    const image = await meta('og:image');
+    expect(image, path).toMatch(/^https:\/\/nandafebian\.my\.id\/og\/.+\.png$/);
+    expect(await meta('og:url'), path).toMatch(/^https:\/\/nandafebian\.my\.id/);
+    expect(await meta('og:image:width')).toBe('1200');
+    expect(await meta('og:image:height')).toBe('630');
+
+    // The build points at the production domain; fetch the same path from the local server.
+    const response = await request.get(new URL(image!).pathname);
+    expect(response.status(), image!).toBe(200);
+    expect(response.headers()['content-type']).toBe('image/png');
+    const body = await response.body();
+    // WhatsApp drops previews above roughly 300 KB.
+    expect(body.length).toBeLessThan(300 * 1024);
+    // PNG header: width and height are big-endian at bytes 16 and 20.
+    expect([body.readUInt32BE(16), body.readUInt32BE(20)]).toEqual([1200, 630]);
+  }
+});
+
 test('project covers follow the theme', async ({ page }) => {
   const visibleCover = () =>
     page

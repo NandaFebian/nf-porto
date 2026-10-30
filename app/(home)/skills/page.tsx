@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-metadata';
 import Link from 'next/link';
 import { skillLevels } from '@/lib/content-schema';
 import { getSkillsByCategory, skillAnchor } from '@/lib/skills';
 
-export const metadata: Metadata = {
-  title: 'Skills',
-  description: 'Languages, frameworks, and tools by category and depth, each linked to the projects that use it.',
-};
+export const metadata: Metadata = pageMetadata('skills');
 
 function LevelMeter({ level }: { level: (typeof skillLevels)[number] }) {
   const filled = skillLevels.length - skillLevels.indexOf(level);

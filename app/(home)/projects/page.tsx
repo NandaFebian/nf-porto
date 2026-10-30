@@ -1,13 +1,10 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-metadata';
 import { Suspense } from 'react';
 import { ProjectBrowser, ProjectBrowserView } from '@/components/project-browser';
 import { getProjectSummaries } from '@/lib/public-files';
 
-export const metadata: Metadata = {
-  title: 'Projects',
-  description:
-    'Every project, filterable by type and tech stack, each with a write-up of the architecture and decisions.',
-};
+export const metadata: Metadata = pageMetadata('projects');
 
 export default function ProjectsPage() {
   const projects = getProjectSummaries();

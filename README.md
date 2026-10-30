@@ -42,5 +42,12 @@ CI (`.github/workflows/ci.yml`) runs all of the checks above on every pull reque
 
 ## Environment
 
-See `.env.example`. On Vercel, set `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, and optionally
-`CONTACT_FROM_EMAIL` and the Turnstile keys. Vercel Analytics and Speed Insights load only on Vercel builds.
+See `.env.example`. On Vercel, set `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, and optionally `CONTACT_FROM_EMAIL` and
+the Turnstile keys. The site URL defaults to `https://nandafebian.my.id`; `NEXT_PUBLIC_SITE_URL` overrides it.
+Vercel Analytics and Speed Insights load only on Vercel builds.
+
+## Link previews
+
+Every page sets `metadata.openGraph.images` to a 1200x630 PNG rendered at build time by `app/og/[...image]/route.tsx`
+(`/og/home.png`, `/og/<page>.png`, `/og/projects/<slug>.png`), using the card in `lib/og-card.tsx`. After a deploy,
+paste a URL into the [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) to refresh LinkedIn's cache.

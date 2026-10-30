@@ -13,6 +13,16 @@ import { skillLevels } from '@/lib/content-schema';
 import { getProjectSummaries } from '@/lib/public-files';
 import { isPlaceholder } from '@/lib/shared';
 import { getSkillsWithProjects } from '@/lib/skills';
+import { homeDescription, homeTitle, ogImageUrl, socialMetadata } from '@/lib/site-metadata';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = socialMetadata({
+  title: homeTitle,
+  description: homeDescription,
+  path: '/',
+  image: ogImageUrl.home,
+  imageAlt: `${profile.name}, ${profile.role}`,
+});
 
 const step = (index: number) => ({ '--step': index }) as CSSProperties;
 

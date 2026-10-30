@@ -6,7 +6,8 @@ import './global.css';
 import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import { ThemeReveal } from '@/components/theme-reveal';
 import { profile } from '@/content/profile';
-import { appName, isPlaceholder, siteUrl } from '@/lib/shared';
+import { appName, siteUrl } from '@/lib/shared';
+import { homeDescription, homeTitle, ogImageUrl, socialMetadata } from '@/lib/site-metadata';
 
 // Their scripts are served from /_vercel/*, which only exists on Vercel; elsewhere they would 404.
 const onVercel = process.env.VERCEL === '1';
@@ -25,11 +26,22 @@ const plexMono = IBM_Plex_Mono({
   variable: '--font-plex-mono',
 });
 
+const homeSocial = socialMetadata({
+  title: homeTitle,
+  description: homeDescription,
+  path: '/',
+  image: ogImageUrl.home,
+  imageAlt: `${profile.name}, ${profile.role}`,
+});
+
 export const metadata: Metadata = {
+  // Turns the relative og:image and og:url paths into the absolute URLs that link previews require.
   metadataBase: new URL(siteUrl),
-  title: { default: `${appName}, ${profile.role}`, template: `%s · ${appName}` },
-  description: isPlaceholder(profile.tagline) ? `Projects and skills of ${profile.name}.` : profile.tagline,
-  openGraph: { siteName: appName, type: 'website' },
+  title: { default: homeTitle, template: `%s · ${appName}` },
+  description: homeDescription,
+  // Defaults for pages without their own, such as the 404 page. The canonical URL stays per page.
+  openGraph: homeSocial.openGraph,
+  twitter: homeSocial.twitter,
 };
 
 export default function Layout({ children }: LayoutProps<'/'>) {

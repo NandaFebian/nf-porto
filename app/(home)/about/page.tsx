@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-metadata';
 import { CvLink } from '@/components/cv-link';
 import { Pending } from '@/components/pending';
 import { PersonJsonLd } from '@/components/person-json-ld';
@@ -9,10 +10,7 @@ import { isPlaceholder } from '@/lib/shared';
 import { groupTimeline } from '@/lib/timeline';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
-  title: 'About',
-  description: `Education, experience, publications, and certifications of ${profile.name}, with a downloadable CV.`,
-};
+export const metadata: Metadata = pageMetadata('about');
 
 function Field({ value, what }: { value: string; what: string }) {
   return isPlaceholder(value) ? <Pending what={what} /> : <>{value}</>;
